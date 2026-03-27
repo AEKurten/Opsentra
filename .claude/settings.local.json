@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python \"C:\\\\Users\\\\Aubrey\\\\.claude\\\\plugins\\\\marketplaces\\\\ui-ux-pro-max-skill\\\\.claude\\\\skills\\\\ui-ux-pro-max\\\\scripts\\\\search.py\" \"engineering operations SaaS industrial B2B professional dashboard\" --design-system -p \"Opsentra EOS\" -f markdown)",
+      "Read(//c/Users/Aubrey/.claude/plugins/marketplaces/ui-ux-pro-max-skill/**)",
+      "Bash(python \"C:\\\\Users\\\\Aubrey\\\\.claude\\\\plugins\\\\marketplaces\\\\ui-ux-pro-max-skill\\\\cli\\\\assets\\\\scripts\\\\search.py\" \"engineering operations SaaS industrial B2B professional dashboard\" --design-system -p \"Opsentra EOS\" -f markdown)",
+      "Bash(python \"C:\\\\Users\\\\Aubrey\\\\.claude\\\\plugins\\\\marketplaces\\\\ui-ux-pro-max-skill\\\\cli\\\\assets\\\\scripts\\\\search.py\" \"operations dashboard B2B SaaS data visualization\" --domain chart -n 5)",
+      "Bash(python \"C:\\\\Users\\\\Aubrey\\\\.claude\\\\plugins\\\\marketplaces\\\\ui-ux-pro-max-skill\\\\cli\\\\assets\\\\scripts\\\\search.py\" \"enterprise dashboard sidebar navigation\" --domain ux -n 5)",
+      "Bash(npx create-next-app@latest . --typescript --tailwind --eslint --app --src-dir --import-alias \"@/*\" --no-git)",
+      "Bash(npx create-next-app@latest . --typescript --tailwind --eslint --app --src-dir --import-alias \"@/*\" --no-git --yes)",
+      "Read(//c/Projects/**)",
+      "Bash(npx create-next-app@latest opsentra-app --typescript --tailwind --eslint --app --src-dir --import-alias \"@/*\" --no-git --yes)"
+    ],
+    "additionalDirectories": [
+      "c:\\Users\\Aubrey\\.claude\\projects\\c--Projects-Opsentra\\memory"
+    ]
+  }
+}
