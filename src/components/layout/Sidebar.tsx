@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import {
   LayoutDashboard, FolderKanban, CheckSquare,
-  Users, Building2, Activity, Settings, Zap, X,
+  Users, Building2, Activity, Settings, Zap, X, ClipboardList,
 } from "lucide-react";
 
 const NAV_GROUPS = [
@@ -15,6 +15,7 @@ const NAV_GROUPS = [
       { href: "/dashboard", label: "Dashboard",    icon: LayoutDashboard },
       { href: "/projects",  label: "Projects",     icon: FolderKanban    },
       { href: "/tasks",     label: "Tasks",        icon: CheckSquare     },
+      { href: "/jobs",      label: "Jobs",         icon: ClipboardList   },
     ],
   },
   {

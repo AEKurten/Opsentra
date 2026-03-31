@@ -1,4 +1,4 @@
-import type { Client, User, Project, Task, Comment, ActivityLog, DashboardStats } from "./types";
+import type { Client, User, Project, Task, Comment, ActivityLog, DashboardStats, JobStatus, Workshop, Job } from "./types";
 
 export const MOCK_USERS: User[] = [
   { id: "u1", name: "Aubrey Ndlovu", role: "admin", email: "aubrey@opsentra.co.za", avatar_url: null },
@@ -160,4 +160,87 @@ export const MOCK_PROJECT_STATUS_DATA = [
   { name: "Active", value: 4, color: "#10B981" },
   { name: "On Hold", value: 1, color: "#F59E0B" },
   { name: "Completed", value: 1, color: "#3B82F6" },
+];
+
+export const MOCK_JOB_STATUSES: JobStatus[] = [
+  { id: "js1", name: "Received",             color: "#64748B", bg_color: "#F1F5F9", sort_order: 1, is_default: true  },
+  { id: "js2", name: "In Workshop",          color: "#2563EB", bg_color: "#DBEAFE", sort_order: 2, is_default: false },
+  { id: "js3", name: "Awaiting Parts",       color: "#D97706", bg_color: "#FEF3C7", sort_order: 3, is_default: false },
+  { id: "js4", name: "Quality Check",        color: "#7C3AED", bg_color: "#EDE9FE", sort_order: 4, is_default: false },
+  { id: "js5", name: "Ready for Collection", color: "#059669", bg_color: "#D1FAE5", sort_order: 5, is_default: false },
+  { id: "js6", name: "Completed",            color: "#059669", bg_color: "#D1FAE5", sort_order: 6, is_default: false },
+  { id: "js7", name: "Cancelled",            color: "#DC2626", bg_color: "#FEE2E2", sort_order: 7, is_default: false },
+];
+
+export const MOCK_WORKSHOPS: Workshop[] = [
+  { id: "w1", name: "Workshop A",          location: "Main Building — Bay 1–3"  },
+  { id: "w2", name: "Workshop B",          location: "Main Building — Bay 4–6"  },
+  { id: "w3", name: "Fabrication Shop",    location: "East Wing"                },
+  { id: "w4", name: "Electrical Workshop", location: "West Wing, Level 2"       },
+];
+
+export const MOCK_JOBS: Job[] = [
+  {
+    id: "j1", job_number: "JOB-0001",
+    description: "Hydraulic pump overhaul and seal replacement",
+    client_id: "c1", assigned_technician_id: "u3", workshop_id: "w1",
+    expected_completion_date: "2026-04-10", status_id: "js2",
+    created_at: "2026-03-15T08:00:00Z",
+    client: MOCK_CLIENTS[0], assigned_technician: MOCK_USERS[2],
+    workshop: MOCK_WORKSHOPS[0], status: MOCK_JOB_STATUSES[1],
+  },
+  {
+    id: "j2", job_number: "JOB-0002",
+    description: "Gearbox bearing replacement — 5-stage helical unit",
+    client_id: "c2", assigned_technician_id: "u4", workshop_id: "w1",
+    expected_completion_date: "2026-04-05", status_id: "js3",
+    created_at: "2026-03-18T09:30:00Z",
+    client: MOCK_CLIENTS[1], assigned_technician: MOCK_USERS[3],
+    workshop: MOCK_WORKSHOPS[0], status: MOCK_JOB_STATUSES[2],
+  },
+  {
+    id: "j3", job_number: "JOB-0003",
+    description: "Electric motor rewind — 75kW, 4-pole",
+    client_id: "c3", assigned_technician_id: "u3", workshop_id: "w4",
+    expected_completion_date: "2026-04-18", status_id: "js4",
+    created_at: "2026-03-20T10:00:00Z",
+    client: MOCK_CLIENTS[2], assigned_technician: MOCK_USERS[2],
+    workshop: MOCK_WORKSHOPS[3], status: MOCK_JOB_STATUSES[3],
+  },
+  {
+    id: "j4", job_number: "JOB-0004",
+    description: "Valve actuator repair and calibration",
+    client_id: "c4", assigned_technician_id: "u4", workshop_id: "w2",
+    expected_completion_date: "2026-03-28", status_id: "js5",
+    created_at: "2026-03-10T08:00:00Z",
+    client: MOCK_CLIENTS[3], assigned_technician: MOCK_USERS[3],
+    workshop: MOCK_WORKSHOPS[1], status: MOCK_JOB_STATUSES[4],
+  },
+  {
+    id: "j5", job_number: "JOB-0005",
+    description: "Conveyor drive shaft machining and balancing",
+    client_id: "c3", assigned_technician_id: null, workshop_id: "w3",
+    expected_completion_date: "2026-04-22", status_id: "js1",
+    created_at: "2026-03-28T11:00:00Z",
+    client: MOCK_CLIENTS[2], assigned_technician: undefined,
+    workshop: MOCK_WORKSHOPS[2], status: MOCK_JOB_STATUSES[0],
+  },
+  {
+    id: "j6", job_number: "JOB-0006",
+    description: "Pressure vessel NDT inspection and certification",
+    client_id: "c1", assigned_technician_id: "u5", workshop_id: null,
+    expected_completion_date: "2026-04-30", status_id: "js2",
+    created_at: "2026-03-29T08:00:00Z",
+    client: MOCK_CLIENTS[0], assigned_technician: MOCK_USERS[4],
+    workshop: undefined, status: MOCK_JOB_STATUSES[1],
+  },
+  {
+    id: "j7", job_number: "JOB-0007",
+    description: "Cooling tower fan blade replacement and balancing",
+    client_id: "c2", assigned_technician_id: "u3", workshop_id: "w1",
+    expected_completion_date: "2026-03-25", status_id: "js6",
+    created_at: "2026-02-15T08:00:00Z",
+    client: MOCK_CLIENTS[1], assigned_technician: MOCK_USERS[2],
+    workshop: MOCK_WORKSHOPS[0], status: MOCK_JOB_STATUSES[5],
+  },
 ];

@@ -7,13 +7,14 @@ import { ToastContainer } from "@/components/ui/Toast";
 import { usePathname } from "next/navigation";
 
 const TITLES: Record<string, string> = {
-  "/dashboard": "Dashboard",
-  "/projects":  "Projects",
-  "/tasks":     "Tasks",
-  "/clients":   "Clients",
-  "/team":      "Team",
-  "/activity":  "Activity Log",
-  "/settings":  "Settings",
+  "/dashboard":        "Dashboard",
+  "/projects":         "Projects",
+  "/tasks":            "Tasks",
+  "/jobs":             "Jobs",
+  "/clients":          "Clients",
+  "/team":             "Team",
+  "/activity":         "Activity Log",
+  "/settings":         "Settings",
 };
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {

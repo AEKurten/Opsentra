@@ -176,6 +176,82 @@ END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
 
 -- ==========================================
+-- JOB STATUSES (configurable)
+-- ==========================================
+CREATE TABLE IF NOT EXISTS public.job_statuses (
+  id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+  name TEXT NOT NULL,
+  color TEXT NOT NULL DEFAULT '#64748B',
+  bg_color TEXT NOT NULL DEFAULT '#F1F5F9',
+  sort_order INTEGER NOT NULL DEFAULT 0,
+  is_default BOOLEAN NOT NULL DEFAULT false,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+ALTER TABLE public.job_statuses ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Authenticated users can view job statuses" ON public.job_statuses FOR SELECT USING (auth.role() = 'authenticated');
+CREATE POLICY "Managers+ can manage job statuses" ON public.job_statuses FOR ALL USING (
+  EXISTS (SELECT 1 FROM public.users WHERE id = auth.uid() AND role IN ('admin', 'manager'))
+);
+
+-- ==========================================
+-- WORKSHOPS (configurable)
+-- ==========================================
+CREATE TABLE IF NOT EXISTS public.workshops (
+  id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+  name TEXT NOT NULL,
+  location TEXT,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+ALTER TABLE public.workshops ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Authenticated users can view workshops" ON public.workshops FOR SELECT USING (auth.role() = 'authenticated');
+CREATE POLICY "Managers+ can manage workshops" ON public.workshops FOR ALL USING (
+  EXISTS (SELECT 1 FROM public.users WHERE id = auth.uid() AND role IN ('admin', 'manager'))
+);
+
+-- ==========================================
+-- JOBS
+-- ==========================================
+CREATE TABLE IF NOT EXISTS public.jobs (
+  id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+  job_number TEXT NOT NULL UNIQUE,
+  description TEXT NOT NULL,
+  client_id UUID REFERENCES public.clients(id) ON DELETE SET NULL,
+  assigned_technician_id UUID REFERENCES public.users(id) ON DELETE SET NULL,
+  workshop_id UUID REFERENCES public.workshops(id) ON DELETE SET NULL,
+  expected_completion_date DATE,
+  status_id UUID NOT NULL REFERENCES public.job_statuses(id),
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+ALTER TABLE public.jobs ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Authenticated users can view jobs" ON public.jobs FOR SELECT USING (auth.role() = 'authenticated');
+CREATE POLICY "Authenticated users can manage jobs" ON public.jobs FOR ALL USING (auth.role() = 'authenticated');
+
+CREATE INDEX IF NOT EXISTS idx_jobs_status_id ON public.jobs(status_id);
+CREATE INDEX IF NOT EXISTS idx_jobs_client_id ON public.jobs(client_id);
+CREATE INDEX IF NOT EXISTS idx_jobs_assigned_technician_id ON public.jobs(assigned_technician_id);
+CREATE INDEX IF NOT EXISTS idx_jobs_expected_completion_date ON public.jobs(expected_completion_date);
+
+-- Auto-increment job number sequence
+CREATE SEQUENCE IF NOT EXISTS public.job_number_seq START 1;
+
+CREATE OR REPLACE FUNCTION public.generate_job_number()
+RETURNS TRIGGER AS $$
+BEGIN
+  IF NEW.job_number IS NULL OR NEW.job_number = '' THEN
+    NEW.job_number := 'JOB-' || LPAD(nextval('public.job_number_seq')::TEXT, 4, '0');
+  END IF;
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER set_job_number
+  BEFORE INSERT ON public.jobs
+  FOR EACH ROW EXECUTE FUNCTION public.generate_job_number();
+
+-- ==========================================
 -- REALTIME
 -- Enable realtime for key tables
 -- ==========================================
@@ -183,3 +259,4 @@ ALTER PUBLICATION supabase_realtime ADD TABLE public.tasks;
 ALTER PUBLICATION supabase_realtime ADD TABLE public.comments;
 ALTER PUBLICATION supabase_realtime ADD TABLE public.projects;
 ALTER PUBLICATION supabase_realtime ADD TABLE public.activity_logs;
+ALTER PUBLICATION supabase_realtime ADD TABLE public.jobs;

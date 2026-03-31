@@ -75,6 +75,38 @@ export interface ActivityLog {
   user?: User;
 }
 
+export interface JobStatus {
+  id: string;
+  name: string;
+  color: string;
+  bg_color: string;
+  sort_order: number;
+  is_default: boolean;
+}
+
+export interface Workshop {
+  id: string;
+  name: string;
+  location: string | null;
+}
+
+export interface Job {
+  id: string;
+  job_number: string;
+  description: string;
+  client_id: string;
+  assigned_technician_id: string | null;
+  workshop_id: string | null;
+  expected_completion_date: string | null;
+  status_id: string;
+  created_at: string;
+  // Joined
+  client?: Client;
+  assigned_technician?: User;
+  workshop?: Workshop;
+  status?: JobStatus;
+}
+
 // Dashboard stats
 export interface DashboardStats {
   total_projects: number;
